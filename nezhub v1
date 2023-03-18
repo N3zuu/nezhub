@@ -6,9 +6,13 @@ getgenv().AutoSkillQ = false
 getgenv().walkspeed1 = false
 getgenv().TweenTp = false
 
+
+
+------------------------------------------------------------------------------------------------variables/gui
+
 local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3')))()
 
-local w = library:CreateWindow("A One Piece Game") -- Creates the window
+local w = library:CreateWindow("BloxFruit") -- Creates the window
 
 local w1 = library:CreateWindow("misc") -- Creates the window
 
@@ -207,5 +211,16 @@ if TweenTp == true then
     end
 end
 
-
-
+---------------------------------------------------------------------------------------------------------------------- fast attack/inf range
+local CombatFramework = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
+local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
+Camera:Stop()
+coroutine.wrap(function()
+    game:GetService("RunService").Stepped:Connect(function()
+        if getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack then
+            getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = 0
+            getupvalues(CombatFramework)[2]['activeController'].hitboxMagnitude = 25
+            getupvalues(CombatFramework)[2]['activeController']:attack()
+        end
+    end)
+end)()
